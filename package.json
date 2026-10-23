@@ -3,7 +3,25 @@
   "private": true,
   "version": "0.1.0",
   "description": "An accessible, bilingual (EN/DE) learning-game platform where games and host talk through a typed postMessage bridge.",
-  "workspaces": ["packages/*", "apps/*", "games/*"],
-  "engines": { "node": ">=20" },
-  "scripts": {}
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "games/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.10",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0"
+  }
 }
