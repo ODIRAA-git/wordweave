@@ -293,3 +293,40 @@ body {
 .button.secondary:hover {
   background: #cfeae4;
 }
+.slots.shake {
+  animation: shake 360ms ease;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.slot.correct {
+  background: #dff5e8;
+  border-color: #2e9e5b;
+}
+
+.hint.success {
+  color: #1c7a45;
+  font-weight: 700;
+}
+
+.hint.try-again {
+  color: var(--color-danger);
+  font-weight: 700;
+}
