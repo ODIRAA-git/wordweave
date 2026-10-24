@@ -18,12 +18,13 @@ embedded safely, configured for accessibility and shipped in English and German.
 ## Roadmap
 
 - [x] Monorepo setup, linting and formatting
-- [ ] Bridge: typed protocol, validation and tests
-- [ ] First game: LetterLoop (build a word from scrambled letters)
+- [x] Bridge: typed protocol, validation and tests
+- [x] First game: LetterLoop (build a word from scrambled letters)
 - [ ] Host app: iframe embedding and progress panel
-- [ ] CI: lint and tests on every push
+- [x] CI: lint and tests on every push
 - [ ] Accessibility: keyboard control, dyslexia-friendly font, spacing, themes, reduced motion
 - [ ] i18n: EN/DE for UI text and word lists
+- [ ] Touch & Say: tap a body part, hear its name in EN/DE, with an illustrated character with selectable skin tone
 - [ ] More games: SoundMatch, SyllableSnap
 - [ ] Accessibility audit with axe and a WCAG checklist
 
