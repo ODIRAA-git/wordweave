@@ -1,0 +1,247 @@
+:root {
+  /* Color */
+  --color-bg: #fbf7f0;
+  --color-surface: #ffffff;
+  --color-ink: #1f2a44;
+  --color-ink-soft: #55607a;
+  --color-primary: #1f7a70;
+  --color-primary-hover: #186258;
+  --color-on-primary: #ffffff;
+  --color-accent: #f4c95d;
+  --color-danger: #c4453b;
+
+  /* Shape and depth */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --shadow-card: 0 12px 32px rgba(31, 42, 68, 0.12);
+  --shadow-tile: 0 4px 10px rgba(31, 42, 68, 0.12);
+
+  /* Spacing */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+
+  /* Type (the accessibility settings will change these later) */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --letter-spacing: 0em;
+  --line-height: 1.6;
+
+  --transition: 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-2);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  letter-spacing: var(--letter-spacing);
+  line-height: var(--line-height);
+  background: linear-gradient(180deg, #a9e1f2 0%, #d9f1e8 55%, #fdf3d6 100%);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.card {
+  width: min(100%, 34rem);
+  padding: var(--space-4) var(--space-3);
+  text-align: center;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.title {
+  margin: 0 0 var(--space-1);
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  letter-spacing: -0.01em;
+}
+
+.hint {
+  margin: 0 0 var(--space-3);
+  color: var(--color-ink-soft);
+  font-size: 1.125rem;
+}
+
+.tiles {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.tile {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  background: var(--color-accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-tile);
+  transition: transform var(--transition);
+}
+
+.tile:hover {
+  transform: translateY(-4px) rotate(-2deg);
+}
+
+.button {
+  padding: 0.9rem 2.25rem;
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    transform var(--transition);
+}
+
+.button:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+}
+.mascot {
+  width: 7.5rem;
+  height: auto;
+  margin-bottom: var(--space-1);
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.pill {
+  padding: 0.25rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: #e3f3f0;
+  border-radius: 999px;
+}
+
+.stars {
+  color: var(--color-accent);
+  font-size: 1.5rem;
+  letter-spacing: 0.15em;
+}
+.card {
+  position: relative;
+  z-index: 1;
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cloud {
+  position: absolute;
+  top: var(--y);
+  left: -14rem;
+  width: 9rem;
+  height: 3rem;
+  background: #fff;
+  border-radius: 999px;
+  opacity: 0.85;
+  animation: drift var(--t) linear infinite;
+  animation-delay: var(--d);
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.cloud::before {
+  width: 4rem;
+  height: 4rem;
+  top: -1.6rem;
+  left: 1.2rem;
+}
+
+.cloud::after {
+  width: 3rem;
+  height: 3rem;
+  top: -1rem;
+  left: 4.6rem;
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(calc(100vw + 28rem));
+  }
+}
+
+.float-letter {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: var(--size);
+  font-weight: 800;
+  color: var(--c, #ffffffc0);
+  text-shadow: 0 6px 14px rgba(31, 42, 68, 0.12);
+  animation: float 6s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(6deg);
+  }
+}
+
+.hills {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 30vh;
+}
