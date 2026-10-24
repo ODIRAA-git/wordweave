@@ -1,6 +1,7 @@
 import "./styles.css";
 import { LEVELS, isCorrect, scoreForLevel, shuffleLetters } from "./game";
 import { mascotSvg, sceneHtml } from "./scene";
+import { connectToHost } from "./host-link";
 
 interface Tile {
   id: number;
@@ -11,6 +12,7 @@ interface Tile {
 type Status = "playing" | "wrong" | "won";
 
 const starsFor = (mistakes: number): number => (mistakes === 0 ? 3 : mistakes === 1 ? 2 : 1);
+const GAME_ID = "letterloop";
 
 const app = document.getElementById("app");
 
@@ -26,6 +28,9 @@ if (app) {
   let levelScore = 0;
   let totalScore = 0;
   let status: Status = "playing";
+
+  // Messages from the host (language, theme, accessibility) will be handled in a later commit.
+  const host = connectToHost(() => undefined);
 
   const render = (): void => {
     if (!card) return;
@@ -109,6 +114,13 @@ if (app) {
       status = "won";
       levelScore = scoreForLevel(word, mistakes);
       totalScore += levelScore;
+      host.send({ type: "SCORE_UPDATE", gameId: GAME_ID, score: totalScore });
+      host.send({
+        type: "LEVEL_COMPLETE",
+        gameId: GAME_ID,
+        level: levelIndex + 1,
+        score: levelScore,
+      });
       return;
     }
     mistakes += 1;
@@ -162,5 +174,6 @@ if (app) {
     }
   });
 
+  host.send({ type: "GAME_READY", gameId: GAME_ID });
   startLevel(0);
 }
