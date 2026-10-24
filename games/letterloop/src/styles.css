@@ -245,3 +245,51 @@ body {
   width: 100%;
   height: 30vh;
 }
+.slots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.slot {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  font-size: 2rem;
+  font-weight: 700;
+  background: #f4f8fb;
+  border: 3px dashed #b9c7d8;
+  border-radius: var(--radius-md);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+
+.slot.filled {
+  background: #e3f3f0;
+  border: 3px solid var(--color-primary);
+}
+
+.tile {
+  border: 0;
+  color: var(--color-ink);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tile:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+}
+
+.button.secondary {
+  color: var(--color-primary);
+  background: #e3f3f0;
+}
+
+.button.secondary:hover {
+  background: #cfeae4;
+}
