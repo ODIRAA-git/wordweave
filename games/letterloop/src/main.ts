@@ -82,9 +82,9 @@ if (app) {
       <div class="meta">
         <span class="pill">Level ${level.id}</span>
         <span class="pill">Score ${totalScore}</span>
-        <span class="stars" aria-label="${stars} of 3 stars">${starText}</span>
+        <span class="stars" role="img" aria-label="${stars} of 3 stars">${starText}</span>
       </div>
-      <div class="slots${status === "wrong" ? " shake" : ""}" aria-label="Your answer">${slots}</div>
+      <div class="slots${status === "wrong" ? " shake" : ""}" role="group" aria-label="Your answer">
       <div class="tiles">${tileButtons}</div>
       ${action}
     `;
