@@ -31,13 +31,18 @@ if (app) {
   let levelScore = 0;
   let totalScore = 0;
   let status: Status = "playing";
-  const language: Language = "en";
+  let language: Language = "en";
   const tr = (key: MessageKey, values?: Record<string, string | number>): string =>
     t(language, key, values);
 
-  // Settings from the host. Language and theme will be handled in later commits.
+  // Settings from the host. The theme will be handled in a later commit.
   const host = connectToHost((message) => {
     if (message.type === "SET_A11Y") applyA11y(message.settings);
+    if (message.type === "SET_LANGUAGE") {
+      language = message.language;
+      document.documentElement.lang = language;
+      render();
+    }
   });
 
   const render = (): void => {
