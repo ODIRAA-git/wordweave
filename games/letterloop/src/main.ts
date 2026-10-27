@@ -3,6 +3,8 @@ import { LEVELS, isCorrect, scoreForLevel, shuffleLetters } from "./game";
 import { mascotSvg, sceneHtml } from "./scene";
 import { connectToHost } from "./host-link";
 import { applyA11y } from "./apply-settings";
+import type { Language } from "@wordweave/bridge";
+import { t, type MessageKey } from "./i18n";
 
 interface Tile {
   id: number;
@@ -29,6 +31,9 @@ if (app) {
   let levelScore = 0;
   let totalScore = 0;
   let status: Status = "playing";
+  const language: Language = "en";
+  const tr = (key: MessageKey, values?: Record<string, string | number>): string =>
+    t(language, key, values);
 
   // Settings from the host. Language and theme will be handled in later commits.
   const host = connectToHost((message) => {
@@ -54,7 +59,7 @@ if (app) {
     const tileButtons = tiles
       .map(
         (t) =>
-          `<button class="tile" type="button" data-id="${t.id}" aria-label="Letter ${t.char}"${
+          `<button class="tile" type="button" data-id="${t.id}" aria-label="${tr("letter", { char: t.char })}"${
             t.used ? " disabled" : ""
           }>${t.char}</button>`,
       )
@@ -65,10 +70,10 @@ if (app) {
 
     const message =
       status === "won"
-        ? `<p class="hint success" aria-live="polite">Well done! +${levelScore} points</p>`
+        ? `<p class="hint success" aria-live="polite">${tr("wellDone", { points: levelScore })}</p>`
         : status === "wrong"
-          ? `<p class="hint try-again" aria-live="polite">Not quite. Try again!</p>`
-          : `<p class="hint" aria-live="polite">Help Weavey build the word from the letters.</p>`;
+          ? `<p class="hint try-again" aria-live="polite">${tr("tryAgain")}</p>`
+          : `<p class="hint" aria-live="polite">${tr("hint")}</p>`;
 
     const isLast = levelIndex === LEVELS.length - 1;
     const action =
@@ -83,11 +88,11 @@ if (app) {
       <h1 class="title">LetterLoop</h1>
       ${message}
       <div class="meta">
-        <span class="pill">Level ${level.id}</span>
-        <span class="pill">Score ${totalScore}</span>
-        <span class="stars" role="img" aria-label="${stars} of 3 stars">${starText}</span>
+        <span class="pill"${tr("level")} ${level.id}></span>
+        <span class="pill">${tr("score")} ${totalScore}</span>
+        <span class="stars" role="img" aria-label="${tr("stars", { count: stars })}">${starText}</span>
       </div>
-      <div class="slots${status === "wrong" ? " shake" : ""}" role="group" aria-label="Your answer">${slots}</div>
+      <div class="slots${status === "wrong" ? " shake" : ""}" role="group" aria-label="${tr("yourAnswer")}">${slots}</div>
       <div class="tiles">${tileButtons}</div>
       ${action}
     `;
