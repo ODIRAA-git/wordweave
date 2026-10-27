@@ -16,6 +16,7 @@ embedded safely, configured for accessibility and shipped in English and German.
 - **Host app:** a React + TypeScript page that embeds the game in a sandboxed iframe and shows
   live progress (score, levels completed) from the game's messages.
 - **CI:** lint, formatting, type check and tests run on every push.
+- **Reading settings:** the host sends font, letter spacing, line height and reduced-motion settings to the game over the bridge (`SET_A11Y`), and the game applies them live.
 
 ## Architecture
 
@@ -25,12 +26,13 @@ embedded safely, configured for accessibility and shipped in English and German.
 
 ### Messages
 
-| Direction    | Message                                 | Purpose                         |
-| ------------ | --------------------------------------- | ------------------------------- |
-| Game to host | `GAME_READY`                            | The game has loaded             |
-| Game to host | `SCORE_UPDATE`                          | Total score changed             |
-| Game to host | `LEVEL_COMPLETE`                        | A level was finished            |
-| Host to game | `SET_LANGUAGE`, `SET_THEME`, `SET_A11Y` | Settings (game side comes next) |
+| Direction    | Message                     | Purpose                        |
+| ------------ | --------------------------- | ------------------------------ |
+| Game to host | `GAME_READY`                | The game has loaded            |
+| Game to host | `SCORE_UPDATE`              | Total score changed            |
+| Game to host | `LEVEL_COMPLETE`            | A level was finished           |
+| Host to game | `SET_A11Y`                  | Reading settings (works today) |
+| Host to game | `SET_LANGUAGE`, `SET_THEME` | Language and theme (planned)   |
 
 Every message travels in an envelope (`protocol`, `version`, `message`). The receiver checks
 the sender's origin and window, then validates the message shape before acting on it. Anything
@@ -60,8 +62,10 @@ npm run lint    # ESLint
 - [x] First game: LetterLoop (build a word from scrambled letters)
 - [x] Host app: iframe embedding and progress panel
 - [x] CI: lint and tests on every push
-- [ ] Host settings that control the game (language, theme, accessibility)
-- [ ] Accessibility: dyslexia-friendly font, spacing, themes, reduced motion
+- [x] Host reading settings that control the game (font, spacing, line height, reduced motion)
+- [x] Lighthouse accessibility audit on the game: score 100
+- [ ] Host settings for language and theme
+- [ ] Accessibility: a dedicated dyslexia-friendly font file and colour themes
 - [ ] i18n: EN/DE for UI text and word lists
 - [ ] Word lists by difficulty (EN/DE) and an endless mode
 - [ ] Touch & Say: tap a body part, hear its name in EN/DE, with an illustrated character
