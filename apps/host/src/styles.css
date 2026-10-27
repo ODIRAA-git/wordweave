@@ -155,3 +155,32 @@ body {
 .dev code {
   word-break: break-all;
 }
+.settings {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e5eaf1;
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.field.check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.field input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-primary);
+}
+
+.field input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--color-primary);
+}

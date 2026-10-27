@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { listenForBridgeMessages, type BridgeMessage } from "@wordweave/bridge";
+import {
+  listenForBridgeMessages,
+  postBridgeMessage,
+  type A11ySettings,
+  type BridgeMessage,
+} from "@wordweave/bridge";
+import { SettingsPanel } from "./SettingsPanel";
 import { summarize } from "./progress";
 import "./styles.css";
 
@@ -7,18 +13,47 @@ const HOST_ORIGIN = window.location.origin;
 const GAME_ORIGIN = "http://localhost:5173";
 const GAME_URL = `${GAME_ORIGIN}/?host=${encodeURIComponent(HOST_ORIGIN)}`;
 
+const DEFAULT_A11Y: A11ySettings = {
+  dyslexiaFont: false,
+  letterSpacing: 0,
+  lineHeight: 1.6,
+  reducedMotion: false,
+};
+
 export function App() {
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [log, setLog] = useState<BridgeMessage[]>([]);
+  const [a11y, setA11y] = useState<A11ySettings>(DEFAULT_A11Y);
+  const a11yRef = useRef(a11y);
   const progress = useMemo(() => summarize(log), [log]);
+
+  const sendSettings = (settings: A11ySettings): void => {
+    const gameWindow = frameRef.current?.contentWindow;
+    if (gameWindow) {
+      postBridgeMessage(gameWindow, { type: "SET_A11Y", settings }, GAME_ORIGIN);
+    }
+  };
 
   useEffect(() => {
     // Only accept messages from the game's origin and from this exact iframe.
-    return listenForBridgeMessages((message) => setLog((previous) => [...previous, message]), {
-      allowedOrigin: GAME_ORIGIN,
-      expectedSource: frameRef.current?.contentWindow,
-    });
+    return listenForBridgeMessages(
+      (message) => {
+        setLog((previous) => [...previous, message]);
+        // When the game announces itself, give it the current settings.
+        if (message.type === "GAME_READY") sendSettings(a11yRef.current);
+      },
+      {
+        allowedOrigin: GAME_ORIGIN,
+        expectedSource: frameRef.current?.contentWindow,
+      },
+    );
   }, []);
+
+  const handleSettingsChange = (settings: A11ySettings): void => {
+    setA11y(settings);
+    a11yRef.current = settings;
+    sendSettings(settings);
+  };
 
   return (
     <div className="page">
@@ -37,7 +72,7 @@ export function App() {
           />
         </section>
 
-        <aside className="panel" aria-label="Progress">
+        <aside className="panel" aria-label="Progress and settings">
           <h2>Progress</h2>
           <p className={progress.ready ? "status online" : "status"} aria-live="polite">
             {progress.ready ? "Game connected" : "Waiting for the game"}
@@ -57,6 +92,8 @@ export function App() {
               <dd>{progress.lastLevelScore ?? "–"}</dd>
             </div>
           </dl>
+
+          <SettingsPanel settings={a11y} onChange={handleSettingsChange} />
 
           <details className="dev">
             <summary>Developer view: bridge messages</summary>
