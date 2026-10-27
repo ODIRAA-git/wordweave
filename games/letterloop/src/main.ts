@@ -2,6 +2,7 @@ import "./styles.css";
 import { LEVELS, isCorrect, scoreForLevel, shuffleLetters } from "./game";
 import { mascotSvg, sceneHtml } from "./scene";
 import { connectToHost } from "./host-link";
+import { applyA11y } from "./apply-settings";
 
 interface Tile {
   id: number;
@@ -29,8 +30,10 @@ if (app) {
   let totalScore = 0;
   let status: Status = "playing";
 
-  // Messages from the host (language, theme, accessibility) will be handled in a later commit.
-  const host = connectToHost(() => undefined);
+  // Settings from the host. Language and theme will be handled in later commits.
+  const host = connectToHost((message) => {
+    if (message.type === "SET_A11Y") applyA11y(message.settings);
+  });
 
   const render = (): void => {
     if (!card) return;

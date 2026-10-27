@@ -330,3 +330,9 @@ body {
   color: var(--color-danger);
   font-weight: 700;
 }
+[data-reduce-motion="true"] *,
+[data-reduce-motion="true"] *::before,
+[data-reduce-motion="true"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
