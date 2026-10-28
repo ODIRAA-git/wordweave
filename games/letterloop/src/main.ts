@@ -86,7 +86,7 @@ if (app) {
         ? `<button class="button" type="button" data-action="next">${
             isLast ? "Play again" : "Next level"
           }</button>`
-        : `<button class="button secondary" type="button" data-action="undo">Undo</button>`;
+        : `<button class="button secondary" type="button" data-action="undo">${tr("undo")}</button>`;
 
     card.innerHTML = `
       ${mascotSvg}
