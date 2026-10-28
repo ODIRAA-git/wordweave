@@ -26,13 +26,14 @@ embedded safely, configured for accessibility and shipped in English and German.
 
 ### Messages
 
-| Direction    | Message                     | Purpose                        |
-| ------------ | --------------------------- | ------------------------------ |
-| Game to host | `GAME_READY`                | The game has loaded            |
-| Game to host | `SCORE_UPDATE`              | Total score changed            |
-| Game to host | `LEVEL_COMPLETE`            | A level was finished           |
-| Host to game | `SET_A11Y`                  | Reading settings (works today) |
-| Host to game | `SET_LANGUAGE`, `SET_THEME` | Language and theme (planned)   |
+| Direction    | Message          | Purpose                        |
+| ------------ | ---------------- | ------------------------------ |
+| Game to host | `GAME_READY`     | The game has loaded            |
+| Game to host | `SCORE_UPDATE`   | Total score changed            |
+| Game to host | `LEVEL_COMPLETE` | A level was finished           |
+| Host to game | `SET_A11Y`       | Reading settings (works today) |
+| Host to game | `SET_LANGUAGE`   | Language (EN or DE)            |
+| Host to game | `SET_THEME`      | Colour theme (planned)         |
 
 Every message travels in an envelope (`protocol`, `version`, `message`). The receiver checks
 the sender's origin and window, then validates the message shape before acting on it. Anything
@@ -64,9 +65,10 @@ npm run lint    # ESLint
 - [x] CI: lint and tests on every push
 - [x] Host reading settings that control the game (font, spacing, line height, reduced motion)
 - [x] Lighthouse accessibility audit on the game: score 100
-- [ ] Host settings for language and theme
+- [x] Host language setting (EN/DE) that switches the game
+- [x] i18n: EN/DE for the game's texts and word lists (the host panel is still English)
+- [ ] Host setting for the colour theme
 - [ ] Accessibility: a dedicated dyslexia-friendly font file and colour themes
-- [ ] i18n: EN/DE for UI text and word lists
 - [ ] Word lists by difficulty (EN/DE) and an endless mode
 - [ ] Touch & Say: tap a body part, hear its name in EN/DE, with an illustrated character
 - [ ] More games: SoundMatch, SyllableSnap
