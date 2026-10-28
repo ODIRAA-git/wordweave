@@ -4,6 +4,7 @@ import {
   postBridgeMessage,
   type A11ySettings,
   type BridgeMessage,
+  type Language,
 } from "@wordweave/bridge";
 import { SettingsPanel } from "./SettingsPanel";
 import { summarize } from "./progress";
@@ -25,12 +26,20 @@ export function App() {
   const [log, setLog] = useState<BridgeMessage[]>([]);
   const [a11y, setA11y] = useState<A11ySettings>(DEFAULT_A11Y);
   const a11yRef = useRef(a11y);
+  const [language, setLanguage] = useState<Language>("en");
+  const languageRef = useRef(language);
   const progress = useMemo(() => summarize(log), [log]);
 
   const sendSettings = (settings: A11ySettings): void => {
     const gameWindow = frameRef.current?.contentWindow;
     if (gameWindow) {
       postBridgeMessage(gameWindow, { type: "SET_A11Y", settings }, GAME_ORIGIN);
+    }
+  };
+  const sendLanguage = (value: Language): void => {
+    const gameWindow = frameRef.current?.contentWindow;
+    if (gameWindow) {
+      postBridgeMessage(gameWindow, { type: "SET_LANGUAGE", language: value }, GAME_ORIGIN);
     }
   };
 
@@ -40,7 +49,10 @@ export function App() {
       (message) => {
         setLog((previous) => [...previous, message]);
         // When the game announces itself, give it the current settings.
-        if (message.type === "GAME_READY") sendSettings(a11yRef.current);
+        if (message.type === "GAME_READY") {
+          sendSettings(a11yRef.current);
+          sendLanguage(languageRef.current);
+        }
       },
       {
         allowedOrigin: GAME_ORIGIN,
@@ -53,6 +65,11 @@ export function App() {
     setA11y(settings);
     a11yRef.current = settings;
     sendSettings(settings);
+  };
+  const handleLanguageChange = (value: Language): void => {
+    setLanguage(value);
+    languageRef.current = value;
+    sendLanguage(value);
   };
 
   return (
@@ -93,7 +110,12 @@ export function App() {
             </div>
           </dl>
 
-          <SettingsPanel settings={a11y} onChange={handleSettingsChange} />
+          <SettingsPanel
+            settings={a11y}
+            onChange={handleSettingsChange}
+            language={language}
+            onLanguageChange={handleLanguageChange}
+          />
 
           <details className="dev">
             <summary>Developer view: bridge messages</summary>
