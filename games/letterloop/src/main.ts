@@ -1,5 +1,5 @@
 import "./styles.css";
-import { LEVELS, isCorrect, scoreForLevel, shuffleLetters } from "./game";
+import { levelsFor, isCorrect, scoreForLevel, shuffleLetters } from "./game";
 import { mascotSvg, sceneHtml } from "./scene";
 import { connectToHost } from "./host-link";
 import { applyA11y } from "./apply-settings";
@@ -32,6 +32,7 @@ if (app) {
   let totalScore = 0;
   let status: Status = "playing";
   let language: Language = "en";
+  const currentLevels = () => levelsFor(language);
   const tr = (key: MessageKey, values?: Record<string, string | number>): string =>
     t(language, key, values);
 
@@ -41,13 +42,13 @@ if (app) {
     if (message.type === "SET_LANGUAGE") {
       language = message.language;
       document.documentElement.lang = language;
-      render();
+      startLevel(levelIndex);
     }
   });
 
   const render = (): void => {
     if (!card) return;
-    const level = LEVELS[levelIndex];
+    const level = currentLevels()[levelIndex];
     if (!level) return;
 
     const slots = level.word
@@ -80,11 +81,11 @@ if (app) {
           ? `<p class="hint try-again" aria-live="polite">${tr("tryAgain")}</p>`
           : `<p class="hint" aria-live="polite">${tr("hint")}</p>`;
 
-    const isLast = levelIndex === LEVELS.length - 1;
+    const isLast = levelIndex === currentLevels().length - 1;
     const action =
       status === "won"
         ? `<button class="button" type="button" data-action="next">${
-            isLast ? "Play again" : "Next level"
+            isLast ? tr("playAgain") : tr("nextLevel")
           }</button>`
         : `<button class="button secondary" type="button" data-action="undo">${tr("undo")}</button>`;
 
@@ -110,7 +111,7 @@ if (app) {
   };
 
   const startLevel = (index: number): void => {
-    const level = LEVELS[index];
+    const level = currentLevels()[index];
     if (!level) return;
     levelIndex = index;
     tiles = shuffleLetters(level.word).map((char, id): Tile => ({ id, char, used: false }));
@@ -145,7 +146,7 @@ if (app) {
   };
 
   const placeTile = (id: number): void => {
-    const level = LEVELS[levelIndex];
+    const level = currentLevels()[levelIndex];
     const tile = tiles.find((t) => t.id === id);
     if (!level || !tile || tile.used || placed.length >= level.word.length) return;
 
@@ -162,7 +163,7 @@ if (app) {
 
     if (status === "won") {
       if (target.closest("[data-action='next']")) {
-        if (levelIndex === LEVELS.length - 1) {
+        if (levelIndex === currentLevels().length - 1) {
           totalScore = 0;
           startLevel(0);
         } else {
