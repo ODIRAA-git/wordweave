@@ -1,17 +1,20 @@
-import type { A11ySettings, Language } from "@wordweave/bridge";
+import type { A11ySettings, Language, Theme } from "@wordweave/bridge";
 
 interface SettingsPanelProps {
   settings: A11ySettings;
   onChange: (settings: A11ySettings) => void;
   language: Language;
   onLanguageChange: (language: Language) => void;
+  theme: Theme;
+  onThemeChange: (theme: Theme) => void;
 }
-
 export function SettingsPanel({
   settings,
   onChange,
   language,
   onLanguageChange,
+  theme,
+  onThemeChange,
 }: SettingsPanelProps) {
   return (
     <section className="settings" aria-labelledby="settings-title">
@@ -24,6 +27,14 @@ export function SettingsPanel({
         >
           <option value="en">English</option>
           <option value="de">Deutsch</option>
+        </select>
+      </label>
+      <label className="field">
+        <span>Colour theme</span>
+        <select value={theme} onChange={(event) => onThemeChange(event.target.value as Theme)}>
+          <option value="light">Light</option>
+          <option value="soft">Soft</option>
+          <option value="dark">Dark</option>
         </select>
       </label>
 

@@ -5,6 +5,7 @@ import {
   type A11ySettings,
   type BridgeMessage,
   type Language,
+  type Theme,
 } from "@wordweave/bridge";
 import { SettingsPanel } from "./SettingsPanel";
 import { summarize } from "./progress";
@@ -28,6 +29,8 @@ export function App() {
   const a11yRef = useRef(a11y);
   const [language, setLanguage] = useState<Language>("en");
   const languageRef = useRef(language);
+  const [theme, setTheme] = useState<Theme>("light");
+  const themeRef = useRef(theme);
   const progress = useMemo(() => summarize(log), [log]);
 
   const sendSettings = (settings: A11ySettings): void => {
@@ -42,6 +45,12 @@ export function App() {
       postBridgeMessage(gameWindow, { type: "SET_LANGUAGE", language: value }, GAME_ORIGIN);
     }
   };
+  const sendTheme = (value: Theme): void => {
+    const gameWindow = frameRef.current?.contentWindow;
+    if (gameWindow) {
+      postBridgeMessage(gameWindow, { type: "SET_THEME", theme: value }, GAME_ORIGIN);
+    }
+  };
 
   useEffect(() => {
     // Only accept messages from the game's origin and from this exact iframe.
@@ -52,6 +61,7 @@ export function App() {
         if (message.type === "GAME_READY") {
           sendSettings(a11yRef.current);
           sendLanguage(languageRef.current);
+          sendTheme(themeRef.current);
         }
       },
       {
@@ -70,6 +80,11 @@ export function App() {
     setLanguage(value);
     languageRef.current = value;
     sendLanguage(value);
+  };
+  const handleThemeChange = (value: Theme): void => {
+    setTheme(value);
+    themeRef.current = value;
+    sendTheme(value);
   };
 
   return (
@@ -115,6 +130,8 @@ export function App() {
             onChange={handleSettingsChange}
             language={language}
             onLanguageChange={handleLanguageChange}
+            theme={theme}
+            onThemeChange={handleThemeChange}
           />
 
           <details className="dev">
