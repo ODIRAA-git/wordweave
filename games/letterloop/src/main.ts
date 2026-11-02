@@ -2,7 +2,7 @@ import "./styles.css";
 import { levelsFor, isCorrect, scoreForLevel, shuffleLetters } from "./game";
 import { mascotSvg, sceneHtml } from "./scene";
 import { connectToHost } from "./host-link";
-import { applyA11y } from "./apply-settings";
+import { applyA11y, applyTheme } from "./apply-settings";
 import type { Language } from "@wordweave/bridge";
 import { t, type MessageKey } from "./i18n";
 
@@ -39,6 +39,7 @@ if (app) {
   // Settings from the host. The theme will be handled in a later commit.
   const host = connectToHost((message) => {
     if (message.type === "SET_A11Y") applyA11y(message.settings);
+    if (message.type === "SET_THEME") applyTheme(message.theme);
     if (message.type === "SET_LANGUAGE") {
       language = message.language;
       document.documentElement.lang = language;
