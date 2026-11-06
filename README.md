@@ -26,14 +26,14 @@ embedded safely, configured for accessibility and shipped in English and German.
 
 ### Messages
 
-| Direction    | Message          | Purpose                        |
-| ------------ | ---------------- | ------------------------------ |
-| Game to host | `GAME_READY`     | The game has loaded            |
-| Game to host | `SCORE_UPDATE`   | Total score changed            |
-| Game to host | `LEVEL_COMPLETE` | A level was finished           |
-| Host to game | `SET_A11Y`       | Reading settings (works today) |
-| Host to game | `SET_LANGUAGE`   | Language (EN or DE)            |
-| Host to game | `SET_THEME`      | Colour theme (planned)         |
+| Direction    | Message          | Purpose                            |
+| ------------ | ---------------- | ---------------------------------- |
+| Game to host | `GAME_READY`     | The game has loaded                |
+| Game to host | `SCORE_UPDATE`   | Total score changed                |
+| Game to host | `LEVEL_COMPLETE` | A level was finished               |
+| Host to game | `SET_A11Y`       | Reading settings (works today)     |
+| Host to game | `SET_LANGUAGE`   | Language (EN or DE)                |
+| Host to game | `SET_THEME`      | Colour theme (light, soft or dark) |
 
 Every message travels in an envelope (`protocol`, `version`, `message`). The receiver checks
 the sender's origin and window, then validates the message shape before acting on it. Anything
@@ -67,7 +67,8 @@ npm run lint    # ESLint
 - [x] Lighthouse accessibility audit on the game: score 100
 - [x] Host language setting (EN/DE) that switches the game
 - [x] i18n: EN/DE for the game's texts and word lists (the host panel is still English)
-- [ ] Host setting for the colour theme
+- [x] Host setting for the colour theme
+- [x] Host remembers settings between visits (validated localStorage)
 - [ ] Accessibility: a dedicated dyslexia-friendly font file and colour themes
 - [ ] Word lists by difficulty (EN/DE) and an endless mode
 - [ ] Touch & Say: tap a body part, hear its name in EN/DE, with an illustrated character
