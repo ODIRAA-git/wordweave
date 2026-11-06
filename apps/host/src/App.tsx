@@ -10,28 +10,28 @@ import {
 import { SettingsPanel } from "./SettingsPanel";
 import { summarize } from "./progress";
 import "./styles.css";
+import { loadSettings, saveSettings } from "./storage";
 
 const HOST_ORIGIN = window.location.origin;
 const GAME_ORIGIN = "http://localhost:5173";
 const GAME_URL = `${GAME_ORIGIN}/?host=${encodeURIComponent(HOST_ORIGIN)}`;
 
-const DEFAULT_A11Y: A11ySettings = {
-  dyslexiaFont: false,
-  letterSpacing: 0,
-  lineHeight: 1.6,
-  reducedMotion: false,
-};
-
 export function App() {
   const frameRef = useRef<HTMLIFrameElement>(null);
   const [log, setLog] = useState<BridgeMessage[]>([]);
-  const [a11y, setA11y] = useState<A11ySettings>(DEFAULT_A11Y);
+  const [saved] = useState(loadSettings);
+
+  const [a11y, setA11y] = useState<A11ySettings>(saved.a11y);
   const a11yRef = useRef(a11y);
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language>(saved.language);
   const languageRef = useRef(language);
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>(saved.theme);
   const themeRef = useRef(theme);
   const progress = useMemo(() => summarize(log), [log]);
+
+  useEffect(() => {
+    saveSettings({ a11y, language, theme });
+  }, [a11y, language, theme]);
 
   const sendSettings = (settings: A11ySettings): void => {
     const gameWindow = frameRef.current?.contentWindow;
