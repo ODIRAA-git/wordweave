@@ -95,7 +95,7 @@ if (app) {
       <h1 class="title">LetterLoop</h1>
       ${message}
       <div class="meta">
-        <span class="pill"${tr("level")} ${level.id}></span>
+        <span class="pill">${tr("level")} ${level.id}</span>
         <span class="pill">${tr("score")} ${totalScore}</span>
         <span class="stars" role="img" aria-label="${tr("stars", { count: stars })}">${starText}</span>
       </div>
