@@ -1,33 +1,37 @@
 import type { Language } from "@wordweave/bridge";
+
+export type Difficulty = "easy" | "medium" | "hard";
+
 export interface Level {
   id: number;
   word: string;
+  difficulty: Difficulty;
 }
 
 export const LEVELS_BY_LANGUAGE: Record<Language, readonly Level[]> = {
   en: [
-    { id: 1, word: "cat" },
-    { id: 2, word: "sun" },
-    { id: 3, word: "book" },
-    { id: 4, word: "tree" },
-    { id: 5, word: "fish" },
-    { id: 6, word: "star" },
-    { id: 7, word: "moon" },
-    { id: 8, word: "house" },
-    { id: 9, word: "apple" },
-    { id: 10, word: "water" },
+    { id: 1, word: "cat", difficulty: "easy" },
+    { id: 2, word: "sun", difficulty: "easy" },
+    { id: 3, word: "book", difficulty: "easy" },
+    { id: 4, word: "tree", difficulty: "easy" },
+    { id: 5, word: "fish", difficulty: "easy" },
+    { id: 6, word: "star", difficulty: "easy" },
+    { id: 7, word: "moon", difficulty: "easy" },
+    { id: 8, word: "house", difficulty: "medium" },
+    { id: 9, word: "apple", difficulty: "medium" },
+    { id: 10, word: "water", difficulty: "medium" },
   ],
   de: [
-    { id: 1, word: "katze" },
-    { id: 2, word: "sonne" },
-    { id: 3, word: "buch" },
-    { id: 4, word: "baum" },
-    { id: 5, word: "fisch" },
-    { id: 6, word: "stern" },
-    { id: 7, word: "mond" },
-    { id: 8, word: "haus" },
-    { id: 9, word: "apfel" },
-    { id: 10, word: "wasser" },
+    { id: 1, word: "katze", difficulty: "medium" },
+    { id: 2, word: "sonne", difficulty: "medium" },
+    { id: 3, word: "buch", difficulty: "easy" },
+    { id: 4, word: "baum", difficulty: "easy" },
+    { id: 5, word: "fisch", difficulty: "easy" },
+    { id: 6, word: "stern", difficulty: "medium" },
+    { id: 7, word: "mond", difficulty: "easy" },
+    { id: 8, word: "haus", difficulty: "easy" },
+    { id: 9, word: "apfel", difficulty: "medium" },
+    { id: 10, word: "wasser", difficulty: "hard" },
   ],
 };
 

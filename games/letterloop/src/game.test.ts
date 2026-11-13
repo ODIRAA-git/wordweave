@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LEVELS, isCorrect, scoreForLevel, shuffleLetters } from "./game";
+import { LEVELS, LEVELS_BY_LANGUAGE, isCorrect, scoreForLevel, shuffleLetters } from "./game";
 
 describe("shuffleLetters", () => {
   it("keeps exactly the same letters", () => {
@@ -47,4 +47,15 @@ describe("scoreForLevel", () => {
   it("never goes below 10", () => {
     expect(scoreForLevel("cat", 20)).toBe(10);
   });
+});
+describe("level lists", () => {
+  for (const [language, levels] of Object.entries(LEVELS_BY_LANGUAGE)) {
+    it(`${language}: every level has a unique id and a valid difficulty`, () => {
+      const ids = levels.map((level) => level.id);
+      expect(new Set(ids).size).toBe(ids.length);
+      for (const level of levels) {
+        expect(["easy", "medium", "hard"]).toContain(level.difficulty);
+      }
+    });
+  }
 });
