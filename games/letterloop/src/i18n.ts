@@ -12,6 +12,7 @@ const en = {
   yourAnswer: "Your answer",
   letter: "Letter {char}",
   stars: "{count} of 3 stars",
+  allDone: "You finished all the levels!",
 };
 
 export type MessageKey = keyof typeof en;
@@ -28,6 +29,7 @@ const de: Record<MessageKey, string> = {
   yourAnswer: "Deine Antwort",
   letter: "Buchstabe {char}",
   stars: "{count} von 3 Sternen",
+  allDone: "Du hast alle Stufen geschafft!",
 };
 
 export const dictionaries: Record<Language, Record<MessageKey, string>> = { en, de };

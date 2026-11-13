@@ -39,3 +39,11 @@ describe("summarize", () => {
     expect(summarize(log).ready).toBe(false);
   });
 });
+describe("summarize replays", () => {
+  it("counts each level once, even when it is played again", () => {
+    const complete = (level: number) =>
+      ({ type: "LEVEL_COMPLETE", gameId: "letterloop", level, score: 10 }) as const;
+    const progress = summarize([complete(1), complete(2), complete(1)]);
+    expect(progress.levelsCompleted).toBe(2);
+  });
+});

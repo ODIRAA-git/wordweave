@@ -36,7 +36,7 @@ if (app) {
   const tr = (key: MessageKey, values?: Record<string, string | number>): string =>
     t(language, key, values);
 
-  // Settings from the host. The theme will be handled in a later commit.
+  // Settings sent by the host: accessibility, theme and language.
   const host = connectToHost((message) => {
     if (message.type === "SET_A11Y") applyA11y(message.settings);
     if (message.type === "SET_THEME") applyTheme(message.theme);
@@ -75,14 +75,16 @@ if (app) {
     const stars = status === "won" ? starsFor(mistakes) : 0;
     const starText = "★".repeat(stars) + "☆".repeat(3 - stars);
 
+    const isLast = levelIndex === currentLevels().length - 1;
     const message =
       status === "won"
-        ? `<p class="hint success" aria-live="polite">${tr("wellDone", { points: levelScore })}</p>`
+        ? `<p class="hint success" aria-live="polite">${tr("wellDone", { points: levelScore })}${
+            isLast ? ` ${tr("allDone")}` : ""
+          }</p>`
         : status === "wrong"
           ? `<p class="hint try-again" aria-live="polite">${tr("tryAgain")}</p>`
           : `<p class="hint" aria-live="polite">${tr("hint")}</p>`;
 
-    const isLast = levelIndex === currentLevels().length - 1;
     const action =
       status === "won"
         ? `<button class="button" type="button" data-action="next">${
@@ -166,6 +168,7 @@ if (app) {
       if (target.closest("[data-action='next']")) {
         if (levelIndex === currentLevels().length - 1) {
           totalScore = 0;
+          host.send({ type: "SCORE_UPDATE", gameId: GAME_ID, score: 0 });
           startLevel(0);
         } else {
           startLevel(levelIndex + 1);
