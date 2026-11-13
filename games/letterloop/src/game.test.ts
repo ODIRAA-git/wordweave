@@ -59,3 +59,13 @@ describe("level lists", () => {
     });
   }
 });
+describe("difficulty tiers", () => {
+  it("has the same number of levels per difficulty in both languages", () => {
+    const counts = (levels: readonly { difficulty: string }[]) => ({
+      easy: levels.filter((level) => level.difficulty === "easy").length,
+      medium: levels.filter((level) => level.difficulty === "medium").length,
+      hard: levels.filter((level) => level.difficulty === "hard").length,
+    });
+    expect(counts(LEVELS_BY_LANGUAGE.de)).toEqual(counts(LEVELS_BY_LANGUAGE.en));
+  });
+});
